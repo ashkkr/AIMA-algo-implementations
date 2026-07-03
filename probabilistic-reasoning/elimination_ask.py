@@ -99,7 +99,7 @@ class EliminationAsk:
         summedFactor = Factor(parameters, values)
         return irrelevant + [summedFactor]
 
-    """factor 1 and factor 2 are list of factors
+    """factor 1 and factor 2 are two factors
         This should return a single factor where paramters will be a union of both factors parameters
         now to get values, we will take permutation of all possible values of parameters, then we will calcuate cpt
         value of each row by multiplying corresponding value row from factor 1 and factor 2"""
