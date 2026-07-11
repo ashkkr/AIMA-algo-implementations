@@ -12,11 +12,10 @@ class RejectionSampling:
         total = sum(counts.values())
         return {k: v / total for k, v in counts.items()}
 
-    def rejection_sampling(self, query: str, e: dict[str, bool]):
-        n = 1000000
+    def rejection_sampling(self, query: str, e: dict[str, bool], n: int):
         # create a tuple to store counts of query variable being true and false
         counts = {True: 0, False: 0}
-        for i in range(n):
+        for _ in range(n):
             x = self.sample.prior_sample()
             # if every value in e is present and same with values in x, then increment count in the tuple for correspoding value
             if all(x[key] == value for key, value in e.items()):
@@ -34,4 +33,4 @@ class RejectionSampling:
 
 if __name__ == "__main__":
     rejectionSampling = RejectionSampling()
-    rejectionSampling.rejection_sampling("burglary", {"alarm": True})
+    rejectionSampling.rejection_sampling("burglary", {"alarm": True}, 1000000)
