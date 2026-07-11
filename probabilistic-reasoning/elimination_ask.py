@@ -1,6 +1,6 @@
 import itertools
 
-from bayesnet import BayesNet
+from bayesnet import BayesNet, BurglaryBayesNet
 
 
 class Factor:
@@ -11,9 +11,9 @@ class Factor:
 
 class EliminationAsk:
 
-    def __init__(self):
-        self.net = BayesNet()
-        self.bn = self.net.burglary_bn
+    def __init__(self, net: BayesNet):
+        self.net = net
+        self.bn = self.net.net
 
     """This function will get cpt values from bayes net of the variable parameter
         Then, we will find out if any value of variable or its parents is already known in the evidence
@@ -136,7 +136,7 @@ class EliminationAsk:
         # eliminate children before their parents, so a hidden variable is only
         # summed out once every factor that mentions it (including from its
         # children's CPTs) has already been folded in
-        variables = list(reversed(self.bn.keys()))
+        variables = list(reversed(self.net.topological_order))
         evidenceVariables = list(evidence.keys())
 
         for variable in variables:
@@ -158,5 +158,5 @@ class EliminationAsk:
 
 
 if __name__ == "__main__":
-    algo = EliminationAsk()
+    algo = EliminationAsk(BurglaryBayesNet())
     algo.elimination_ask("burglary", {"alarm": True})

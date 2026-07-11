@@ -1,12 +1,11 @@
 import random
 
-from bayesnet import BayesNet
+from bayesnet import BayesNet, BurglaryBayesNet
 
 
 class ImportanceSampling:
-    def __init__(self):
-        self.net = BayesNet()
-        self.bn = self.net.burglary_bn
+    def __init__(self, net: BayesNet):
+        self.net = net
 
     def normalised(self, weights: dict[bool, float]) -> dict[bool, float]:
         total = sum(weights.values())
@@ -36,7 +35,7 @@ class ImportanceSampling:
     consistent with the provided evidence. This also returns the likelihood of the sample"""
 
     def weightedSampling(self, e: dict[str, bool]):
-        keys = list(self.bn.keys())
+        keys = self.net.topological_order
         # we store likelihood of the sample in a variable
         w = 1
         x: dict[str, bool] = {}
@@ -59,5 +58,5 @@ class ImportanceSampling:
 
 
 if __name__ == "__main__":
-    importanceSampling = ImportanceSampling()
+    importanceSampling = ImportanceSampling(BurglaryBayesNet())
     importanceSampling.importance_sampling("burglary", {"alarm": True}, 1000000)

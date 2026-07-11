@@ -1,11 +1,10 @@
-from bayesnet import BayesNet
+from bayesnet import BayesNet, BurglaryBayesNet
 from prior_sample import PriorSample
 
 
 class RejectionSampling:
-    def __init__(self):
-        self.net = BayesNet()
-        self.bn = self.net.burglary_bn
+    def __init__(self, net: BayesNet):
+        self.net = net
         self.sample = PriorSample(self.net)
 
     def normalised(self, counts: dict[bool, int]) -> dict[bool, float]:
@@ -32,5 +31,5 @@ class RejectionSampling:
 
 
 if __name__ == "__main__":
-    rejectionSampling = RejectionSampling()
+    rejectionSampling = RejectionSampling(BurglaryBayesNet())
     rejectionSampling.rejection_sampling("burglary", {"alarm": True}, 1000000)

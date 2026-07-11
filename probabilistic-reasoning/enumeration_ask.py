@@ -1,11 +1,10 @@
-from bayesnet import BayesNet
+from bayesnet import BayesNet, BurglaryBayesNet
 
 
 class EnumerationAsk:
 
-    def __init__(self):
-        self.net = BayesNet()
-        self.bn = self.net.burglary_bn
+    def __init__(self, net: BayesNet):
+        self.net = net
 
     def normalised(self, queryDict: dict[bool, float]) -> dict[bool, float]:
         total = sum(queryDict.values())
@@ -14,7 +13,7 @@ class EnumerationAsk:
     # here e can be negative or positive
     # query is just variable name
     def enumeration_ask(self, query: str, e: dict[str, bool]):
-        variables = list(self.bn.keys())
+        variables = self.net.topological_order
 
         queryDict = {}
         for queryValue in [True, False]:
@@ -47,5 +46,5 @@ class EnumerationAsk:
 
 
 if __name__ == "__main__":
-    algo = EnumerationAsk()
+    algo = EnumerationAsk(BurglaryBayesNet())
     algo.enumeration_ask("burglary", {"alarm": True})
