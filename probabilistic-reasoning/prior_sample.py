@@ -1,20 +1,19 @@
 import random
 
-from bayesnet import BayesNet
+from bayesnet import BayesNet, BurglaryBayesNet
 
 
 class PriorSample:
 
     def __init__(self, net: BayesNet):
         self.net = net
-        self.bn = self.net.burglary_bn
 
     """The goal here is to generate a sample"""
 
     def prior_sample(self) -> dict[str, bool]:
         # variables must be in topological order so that a node's parents
         # are always sampled before the node itself
-        variables = list(self.bn.keys())
+        variables = self.net.topological_order
         x: dict[str, bool] = {}
 
         for key in variables:
@@ -28,7 +27,7 @@ class PriorSample:
 
 
 if __name__ == "__main__":
-    net = BayesNet()
+    net = BurglaryBayesNet()
     algo = PriorSample(net)
     for i in range(1000):
         algo.prior_sample()
