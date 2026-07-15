@@ -1,6 +1,7 @@
 from bayesnet import BayesNet, BurglaryBayesNet, SprinklerBayesNet
 from elimination_ask import EliminationAsk
 from expected_cases import CASES, SPRINKLER_CASES
+from gibbs_sampling import GibbsSampling
 from importance_sampling import ImportanceSampling
 from rejection_sampling import RejectionSampling
 
@@ -15,6 +16,7 @@ def run_comparison(net: BayesNet, cases: list[tuple[str, dict[str, bool], float]
     elimination = EliminationAsk(net)
     rejection = RejectionSampling(net)
     importance = ImportanceSampling(net)
+    gibbs = GibbsSampling(net)
 
     for query, evidence, _expected in cases:
         print("=" * 70)
@@ -30,6 +32,9 @@ def run_comparison(net: BayesNet, cases: list[tuple[str, dict[str, bool], float]
 
         print("-- Importance Sampling / Likelihood Weighting (n = 1,000,000) --")
         importance.importance_sampling(query, evidence, N)
+
+        print("-- Gibbs Sampling (n = 1,000,000) --")
+        gibbs.gibbs_sampling(query, evidence, N)
 
         print(f"[reference] P({query}=True | e) via variable elimination = {exact[True]:.6f}")
         print()
