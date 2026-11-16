@@ -1,4 +1,4 @@
-from bayesnet import BayesNet, BurglaryBayesNet
+from bayesnet import BayesNet, BurglaryBayesNet, SprinklerBayesNet
 
 
 class EnumerationAsk:
@@ -46,5 +46,5 @@ class EnumerationAsk:
 
 
 if __name__ == "__main__":
-    algo = EnumerationAsk(BurglaryBayesNet())
-    algo.enumeration_ask("burglary", {"alarm": True})
+    algo = EnumerationAsk(SprinklerBayesNet())
+    algo.enumeration_ask("cloudy", {})
